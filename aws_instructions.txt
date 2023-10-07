@@ -1,0 +1,4 @@
+In certs dir:
+ssh -i "doushiryokucheck_backend.pem" ubuntu@ec2-3-8-4-192.eu-west-2.compute.amazonaws.com
+
+./update_build.sh
