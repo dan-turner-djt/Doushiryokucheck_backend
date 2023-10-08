@@ -14,7 +14,9 @@ const sslServer = https.createServer({
   cert: fs.readFileSync(path.join(__dirname, '..', 'cert', 'cert.pem'))
 }, app);
 
-sslServer.listen(port, () => console.log(`Secure server is running on ${port}`))
+//sslServer.listen(port, () => console.log(`Secure server is running on ${port}`));
+
+app.listen(port, () => console.log(`Server is running on ${port}`));
 
 app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
