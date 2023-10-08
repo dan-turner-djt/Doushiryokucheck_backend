@@ -10,8 +10,8 @@ app.use(cors());
 const port = 5000;
 
 const sslServer = https.createServer({
-  key: fs.readFileSync(path.join(__dirname, '..', 'cert', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '..', 'cert', 'cert.pem'))
+  key: fs.readFileSync(path.join(__dirname, '..', 'certs', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, '..', 'certs', 'cert.pem'))
 }, app);
 
 sslServer.listen(port, () => console.log(`Secure server is running on ${port}`));
