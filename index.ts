@@ -5,7 +5,7 @@ import https from 'https';
 import path from 'path';
 import fs from 'fs';
 
-const secureServer = false;
+const secureServer = true;
 const isLive = true;
 
 const app: Express = express();
