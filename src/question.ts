@@ -1,8 +1,9 @@
+import { VerbInfo } from "jv-conjugator";
 import { getAnswers } from "./answers";
 import { QuestionAnswer, QuestionInfo } from "./defs";
 
-export function getQuestionInfo(): QuestionInfo {
-  const verbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: 0};
+export function getQuestionInfo(verbList: VerbInfo[]): QuestionInfo {
+  const verbInfo: VerbInfo =  verbList[Math.floor(Math.random() * verbList.length)];
   const formInfo = {formName: 1};
 
   let answers: QuestionAnswer[]; 
