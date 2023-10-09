@@ -28,6 +28,11 @@ app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}));
 
 
+app.post('/settings/:id', (req: Request, res: Response) => {
+  console.log(req.params.id);
+  console.log(req.body);
+});
+
 app.get('/question', (req: Request, res: Response) => {
   try {
     const info = getQuestionInfo();
