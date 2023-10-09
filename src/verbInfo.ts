@@ -1,5 +1,6 @@
 import { VerbInfo } from "jv-conjugator";
 import { SettingsObject } from "./defs";
+import path from 'path';
 
 export function getVerbLevelsArray(settingsObj: SettingsObject): string[] {
 	const verbLevels: string[] = [];
@@ -77,7 +78,7 @@ export async function getFullVerbList(settings: SettingsObject): Promise<VerbInf
 }
 
 async function fetchFromFile(level: number, type: string, godanTypes: string[] = []): Promise<VerbInfo[]> {
-	const request: RequestInfo = new Request("./verbData/n" + level + "/n" + level + "_"  + type + ".json");
+	const request: RequestInfo = new Request(path.join(__dirname, '..', "verbData", "n" + level, "n" + level + "_"  + type + ".json"));
 
 	try {
 		return fetch(request)
