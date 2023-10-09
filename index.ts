@@ -5,9 +5,10 @@ import https from 'https';
 import path from 'path';
 import fs from 'fs';
 import { getQuestionInfo } from './src/question';
-import { SettingsObject } from './src/defs';
+import { SettingsObject, VerbFormsInfo } from './src/defs';
 import { getFullVerbList } from './src/verbInfo';
 import { VerbInfo } from 'jv-conjugator';
+import { convertVerbFormsInfo } from './src/formInfo';
 
 const secureServer = true;
 const isLive = true;
@@ -28,7 +29,7 @@ if (secureServer) {
   app.listen(port, () => console.log(`Server is running on ${port}`));
 }
 
-type SettingsInfo = {verbInfo: VerbInfo[]};
+type SettingsInfo = {verbInfo: VerbInfo[], formsInfo: VerbFormsInfo};
 const settingsInfo: Map<string, SettingsInfo> = new Map();
 
 
@@ -38,15 +39,14 @@ app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}
 
 
 app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
-  console.log(req.params.id);
-
   const uid = req.params.id;
   const settings: SettingsObject = req.body.settings;
 
   getFullVerbList(settings)
     .then((info: VerbInfo[]) => {
-      const newInfo: SettingsInfo = {verbInfo: info};
+      const formsInfo: VerbFormsInfo = convertVerbFormsInfo(settings.verbForms, settings.auxForms, settings.exclusiveAux);
 
+      const newInfo: SettingsInfo = {verbInfo: info, formsInfo: formsInfo};
       settingsInfo.set(uid, newInfo);
       res.send("Settings received");
     })
@@ -58,10 +58,7 @@ app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
 
 
 app.get('/question/:id', (req: Request, res: Response) => {
-  console.log(req.params.id);
-
   const uid = req.params.id;
-
 
   try {
     let info: SettingsInfo | undefined = settingsInfo.get(uid);
@@ -69,7 +66,7 @@ app.get('/question/:id', (req: Request, res: Response) => {
       throw new Error("Uid not in store");
     }
 
-    const questionInfo = getQuestionInfo(info.verbInfo);
+    const questionInfo = getQuestionInfo(info.verbInfo, info.formsInfo);
     return res.json(questionInfo);
   } catch (e) {
     console.log((e as Error).message);

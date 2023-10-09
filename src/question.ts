@@ -1,10 +1,20 @@
 import { VerbInfo } from "jv-conjugator";
 import { getAnswers } from "./answers";
-import { QuestionAnswer, QuestionInfo } from "./defs";
+import { QuestionAnswer, QuestionInfo, VerbFormsInfo } from "./defs";
 
-export function getQuestionInfo(verbList: VerbInfo[]): QuestionInfo {
+export function getQuestionInfo(verbList: VerbInfo[], formsInfo: VerbFormsInfo): QuestionInfo {
   const verbInfo: VerbInfo =  verbList[Math.floor(Math.random() * verbList.length)];
-  const formInfo = {formName: 1};
+  
+  let formInfo;
+		if (formsInfo.extraAux.length > 0) {
+			if(Math.random() > 0.5) {
+				formInfo = formsInfo.extraAux[Math.floor(Math.random() * formsInfo.extraAux.length)];
+			} else {
+				formInfo = formsInfo.main[Math.floor(Math.random() * formsInfo.main.length)];
+			}
+		} else {
+			formInfo = formsInfo.main[Math.floor(Math.random() * formsInfo.main.length)];
+		}
 
   let answers: QuestionAnswer[]; 
   

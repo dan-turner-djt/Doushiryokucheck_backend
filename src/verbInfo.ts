@@ -1,6 +1,7 @@
 import { VerbInfo } from "jv-conjugator";
 import { SettingsObject } from "./defs";
 import path from 'path';
+import fs from 'fs/promises';
 
 export function getVerbLevelsArray(settingsObj: SettingsObject): string[] {
 	const verbLevels: string[] = [];
@@ -78,15 +79,13 @@ export async function getFullVerbList(settings: SettingsObject): Promise<VerbInf
 }
 
 async function fetchFromFile(level: number, type: string, godanTypes: string[] = []): Promise<VerbInfo[]> {
-	const request: RequestInfo = new Request(path.join(__dirname, '..', '..', "verbData", "n" + level, "n" + level + "_"  + type + ".json"));
-
 	try {
-		return fetch(request)
-			.then(res => {
-				return res.json();
-			})
-			.then((res) => {
-				if (type === "godan") {
+    return fs.readFile(path.join(__dirname, '..', '..', "verbData", "n" + level, "n" + level + "_"  + type + ".json"), "utf-8")
+      .then(res => {
+        return JSON.parse(res);
+      })
+      .then(res => {
+        if (type === "godan") {
 					if (godanTypes.length === 0) {
 						throw new Error;
 					}
@@ -102,15 +101,15 @@ async function fetchFromFile(level: number, type: string, godanTypes: string[] =
 				}
 
 				return res.data;
-			})
-			.catch(err => {
+      })
+      .catch(err => {
         console.log(err);
 				throw new Error((err as Error).message);
 			});
 	}
 	catch (e) {
 		throw new Error;
-	}	
+	}
 }
 
 function convertSettingsIntoList(settings: SettingsObject): {level: number, type: string}[] {

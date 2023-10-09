@@ -82,3 +82,14 @@ export type SettingsObject = {
 	auxForms: AuxFormData,
 	exclusiveAux: boolean
 }
+
+export type WithPlainForms = "stem" | "present" | "past" | "te" | "tai" | "zu" | "volitional" | "imperative" | "baConditional" | "taraConditional";
+export type WithPoliteForms = "present" | "past" | "te" | "tai" | "volitional" | "imperative" | "baConditional" | "taraConditional";
+export type WithNegativeForms = "present" | "past" | "te" | "tai" | "volitional" | "imperative" | "taraConditional";
+export type WithNegativePoliteForms = "present" | "past" | "te" | "tai" | "taraConditional";
+export type FormNames = WithPlainForms | WithPoliteForms | WithNegativeForms | WithNegativePoliteForms;
+
+
+export type AuxFormNames = "potential" | "passive" | "causative" | "causativePassive" | "chau";
+
+export type VerbFormsInfo = {main: FormInfo[], extraAux: FormInfo[]};
