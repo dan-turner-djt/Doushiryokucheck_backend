@@ -34,6 +34,6 @@ app.get('/question', (req: Request, res: Response) => {
     return res.json(info);
   } catch (e) {
     console.log((e as Error).message);
-    return res.errored;
+    return res.status(500).send((e as Error).message);
   }
 });
