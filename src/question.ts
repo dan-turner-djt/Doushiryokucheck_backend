@@ -13,6 +13,8 @@ export function getQuestionInfo(): QuestionInfo {
     throw new Error("Get answer failed with: " + (e as Error).message);
   }
 
+  throw new Error("test error");
+
   const info: QuestionInfo = {verbInfo: verbInfo, formInfo: formInfo, answers: answers};
   return info;
 }

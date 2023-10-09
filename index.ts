@@ -33,6 +33,7 @@ app.get('/question', (req: Request, res: Response) => {
     const info = getQuestionInfo();
     return res.json(info);
   } catch (e) {
-    return (e as Error).message;
+    console.log((e as Error).message);
+    return res.errored;
   }
 });
