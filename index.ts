@@ -31,6 +31,8 @@ app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}
 app.post('/settings/:id', (req: Request, res: Response) => {
   console.log(req.params.id);
   console.log(req.body);
+
+  res.send("Settings received");
 });
 
 app.get('/question', (req: Request, res: Response) => {
