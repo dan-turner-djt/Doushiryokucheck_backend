@@ -1,9 +1,9 @@
 import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
-import { QuestionAnswer, QuestionInfo } from './defs';
 import https from 'https';
 import path from 'path';
 import fs from 'fs';
+import { getQuestionInfo } from './src/question';
 
 const secureServer = true;
 const isLive = true;
@@ -29,10 +29,10 @@ app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}
 
 
 app.get('/question', (req: Request, res: Response) => {
-  const verbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: 0};
-  const formInfo = {formName: 1};
-  const answers: QuestionAnswer[] = [{kana: "たべた", kanji: "食べた"}];
-  const info: QuestionInfo = {verbInfo: verbInfo, formInfo: formInfo, answers: answers};
-
-  return res.json(info);
+  try {
+    const info = getQuestionInfo();
+    return res.json(info);
+  } catch (e) {
+    return (e as Error).message;
+  }
 });
