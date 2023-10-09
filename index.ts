@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express'
+import bodyParser from 'body-parser';
 import cors from 'cors'
 import https from 'https';
 import path from 'path';
@@ -9,6 +10,7 @@ const secureServer = true;
 const isLive = true;
 
 const app: Express = express();
+const jsonParser = bodyParser.json();
 app.use(cors());
 const port = 5000;
 
@@ -28,7 +30,7 @@ app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}));
 
 
-app.post('/settings/:id', (req: Request, res: Response) => {
+app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
   console.log(req.params.id);
   console.log(req.body);
 
