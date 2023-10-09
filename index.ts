@@ -39,7 +39,6 @@ app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}
 
 app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
   console.log(req.params.id);
-  console.log(req.body);
 
   const uid = req.params.id;
   const settings: SettingsObject = req.body.settings;
@@ -52,9 +51,11 @@ app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
       res.send("Settings received");
     })
     .catch(err => {
+      console.log(err);
 			res.status(500).send((err as Error).message);
 		});
 });
+
 
 app.get('/question/:id', (req: Request, res: Response) => {
   console.log(req.params.id);

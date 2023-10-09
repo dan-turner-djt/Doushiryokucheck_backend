@@ -72,7 +72,7 @@ export async function getFullVerbList(settings: SettingsObject): Promise<VerbInf
 		return fullList;
 	} 
 	catch (e) {
-		throw new Error("Fetch verb list failed");
+		throw new Error("Fetch verb list failed with: " + (e as Error).message);
 	}
 }
 
@@ -103,7 +103,8 @@ async function fetchFromFile(level: number, type: string, godanTypes: string[] =
 				return res.data;
 			})
 			.catch(err => {
-				throw new Error;
+        console.log(err);
+				throw new Error((err as Error).message);
 			});
 	}
 	catch (e) {
