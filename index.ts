@@ -2,7 +2,6 @@ import express, { Express, Request, Response } from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors'
 import https from 'https';
-import path from 'path';
 import fs from 'fs';
 import { getQuestionInfo } from './src/question';
 import { SettingsObject, VerbFormsInfo } from './src/defs';
@@ -11,7 +10,7 @@ import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
 
 const secureServer = true;
-const isLive = true;
+let isLive = false;
 
 const app: Express = express();
 const jsonParser = bodyParser.json();
@@ -28,6 +27,8 @@ if (secureServer) {
 } else {
   app.listen(port, () => console.log(`Server is running on ${port}`));
 }
+
+isLive = true;
 
 type SettingsInfo = {verbInfo: VerbInfo[], formsInfo: VerbFormsInfo};
 const settingsInfo: Map<string, SettingsInfo> = new Map();
