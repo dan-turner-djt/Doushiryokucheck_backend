@@ -85,8 +85,8 @@ export type SettingsObject = {
 
 export type WithPlainForms = "stem" | "present" | "past" | "te" | "tai" | "zu" | "volitional" | "imperative" | "baConditional" | "taraConditional";
 export type WithPoliteForms = "present" | "past" | "te" | "tai" | "volitional" | "imperative" | "baConditional" | "taraConditional";
-export type WithNegativeForms = "present" | "past" | "te" | "tai" | "volitional" | "imperative" | "taraConditional";
-export type WithNegativePoliteForms = "present" | "past" | "te" | "tai" | "taraConditional";
+export type WithNegativeForms = "present" | "past" | "te" | "tai" | "volitional" | "imperative" | "baConditional" | "taraConditional";
+export type WithNegativePoliteForms = "present" | "past" | "te" | "tai" | "baConditional" | "taraConditional";
 export type FormNames = WithPlainForms | WithPoliteForms | WithNegativeForms | WithNegativePoliteForms;
 
 
