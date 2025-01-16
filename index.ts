@@ -9,7 +9,7 @@ import { getFullVerbList } from './src/verbInfo';
 import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
 
-const secureServer = false;
+const secureServer = true;
 let isLive = false;
 
 const app: Express = express();
