@@ -1,8 +1,5 @@
-In certs dir:
-ssh -i "doushiryokucheck_backend.pem" ubuntu@ec2-13-42-230-216.eu-west-2.compute.amazonaws.com
-
-./update_build.sh
-cd Doushiryokucheck_backend
+In SSH dir:
+ssh -i "ec2-london-pc.pem" [the ec2 instance name]
 
 new session: screen -d -m npm start
 list sessions: screen -ls
@@ -10,6 +7,3 @@ kill sessions: killall screen
 
 view session: screen -r
 detach from session: ctrl-A ctrl-D
-
-Update certs:
-sudo ./update_certs
