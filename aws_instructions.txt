@@ -7,6 +7,3 @@ kill sessions: killall screen
 
 view session: screen -r
 detach from session: ctrl-A ctrl-D
-
-Update certs:
-sudo ./update_certs
