@@ -19,8 +19,8 @@ const port = 5000;
 
 if (secureServer) {
   const sslServer = https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/djt-backend-serv.xyz/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/djt-backend-serv.xyz/fullchain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/drc_be.djt-backend-serv.xyz/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/drc_be.djt-backend-serv.xyz/fullchain.pem')
   }, app);
   
   sslServer.listen(port, () => console.log(`Secure server is running on ${port}`));
