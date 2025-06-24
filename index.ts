@@ -10,7 +10,7 @@ import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
 
 const secureServer = false;
-let isLive = false;
+let isLive = true;
 
 const app: Express = express();
 const jsonParser = bodyParser.json();
