@@ -9,8 +9,8 @@ import { getFullVerbList } from './src/verbInfo';
 import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
 
-const secureServer = false;
-let isLive = true;
+const secureServer = true;
+let isLive = false;
 
 const app: Express = express();
 const jsonParser = bodyParser.json();
