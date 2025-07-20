@@ -23,9 +23,9 @@ const privkey = process.env.PRIVKEY;
 const fullchain = process.env.FULLCHAIN;
 
 const connection = async() => await mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USERNAME,
-  password: process.env.PASSWORD,
+  host: process.env.DBHOST,
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
   database: process.env.DATABASE
 });
 
@@ -50,7 +50,7 @@ app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
 app.get('/checkLive', async (req: Request, res: Response) => {
 
-  const verb = await (await connection()).query("SELECT * FROM verbs");
+  const [verb, _] = await (await connection()).query("SELECT * FROM verbs");
 
   res.json({isLive: isLive, verb: verb});
 });
