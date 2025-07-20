@@ -22,12 +22,12 @@ const port = process.env.PORT;
 const privkey = process.env.PRIVKEY;
 const fullchain = process.env.FULLCHAIN;
 
-/*const connection = async() => await mysql.createConnection({
+const connection = async() => await mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
-});*/
+});
 
 if (secureServer && privkey && fullchain) {
   const sslServer = https.createServer({
@@ -50,9 +50,9 @@ app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
 app.get('/checkLive', async (req: Request, res: Response) => {
 
-  //const verb = await (await connection()).query("SELECT * FROM verbs");
+  const verb = await (await connection()).query("SELECT * FROM verbs");
 
-  res.json({isLive: isLive});
+  res.json({isLive: isLive, verb: verb});
 });
 
 
