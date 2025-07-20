@@ -8,6 +8,9 @@ import { SettingsObject, VerbFormsInfo } from './src/defs';
 import { getFullVerbList } from './src/verbInfo';
 import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
+import mysql from 'mysql2/promise';
+
+require('dotenv').config();
 
 const secureServer = true;
 let isLive = false;
@@ -15,12 +18,21 @@ let isLive = false;
 const app: Express = express();
 const jsonParser = bodyParser.json();
 app.use(cors());
-const port = 5000;
+const port = process.env.PORT;
+const privkey = process.env.PRIVKEY;
+const fullchain = process.env.FULLCHAIN;
 
-if (secureServer) {
+/*const connection = async() => await mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
+});*/
+
+if (secureServer && privkey && fullchain) {
   const sslServer = https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/drc-be.djt-backend-serv.xyz/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/drc-be.djt-backend-serv.xyz/fullchain.pem')
+    key: fs.readFileSync(privkey),
+    cert: fs.readFileSync(fullchain)
   }, app);
   
   sslServer.listen(port, () => console.log(`Secure server is running on ${port}`));
@@ -36,7 +48,12 @@ const settingsInfo: Map<string, SettingsInfo> = new Map();
 
 app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
-app.get('/checkLive', (req: Request, res: Response) => res.json({isLive: isLive}));
+app.get('/checkLive', async (req: Request, res: Response) => {
+
+  //const verb = await (await connection()).query("SELECT * FROM verbs");
+
+  res.json({isLive: isLive});
+});
 
 
 app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
