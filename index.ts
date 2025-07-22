@@ -9,6 +9,7 @@ import { getFullVerbList } from './src/verbInfo';
 import { VerbInfo } from 'jv-conjugator';
 import { convertVerbFormsInfo } from './src/formInfo';
 import mysql from 'mysql2/promise';
+import { convertVerbs } from './src/convert';
 
 require('dotenv').config();
 
@@ -22,7 +23,7 @@ const port = process.env.PORT;
 const privkey = process.env.PRIVKEY;
 const fullchain = process.env.FULLCHAIN;
 
-const connection = async() => await mysql.createConnection({
+export const dbConnection = async() => await mysql.createConnection({
   host: process.env.DBHOST,
   user: process.env.DBUSER,
   password: process.env.DBPASSWORD,
@@ -50,7 +51,7 @@ app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
 app.get('/checkLive', async (req: Request, res: Response) => {
 
-  const [verb, _] = await (await connection()).query("SELECT * FROM verbs");
+  const [verb, _] = await (await dbConnection()).query("SELECT * FROM verbs");
 
   res.json({isLive: isLive, verb: verb});
 });
@@ -90,4 +91,11 @@ app.get('/question/:id', (req: Request, res: Response) => {
     console.log((e as Error).message);
     return res.status(500).send((e as Error).message);
   }
+});
+
+app.post('/convert', jsonParser, async (req: Request, res: Response) => {
+  if (!secureServer) {
+    await convertVerbs();
+  }
+  res.send("Converted");
 });

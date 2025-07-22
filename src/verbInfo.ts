@@ -78,7 +78,7 @@ export async function getFullVerbList(settings: SettingsObject): Promise<VerbInf
 	}
 }
 
-async function fetchFromFile(level: number, type: string, godanTypes: string[] = []): Promise<VerbInfo[]> {
+export async function fetchFromFile(level: number, type: string, godanTypes: string[] = []): Promise<VerbInfo[]> {
 	try {
     return fs.readFile(path.join(__dirname, '..', '..', "verbData", "n" + level, "n" + level + "_"  + type + ".json"), "utf-8")
       .then(res => {
