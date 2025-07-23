@@ -3,6 +3,28 @@ import { FormInfo, VerbInfo } from "jv-conjugator";
 export type QuestionAnswer = {kana: string, kanji?: string};
 export type QuestionInfo = {verbInfo: VerbInfo, formInfo: FormInfo, answers: QuestionAnswer[]};
 
+export type VerbTypeSettingsObjectData = {
+  vtIchidan: boolean,
+  vtIrregular: boolean,
+  vtBu: boolean,
+  vtGu: boolean,
+  vtKu: boolean,
+  vtMu: boolean,
+  vtNu: boolean,
+  vtRu: boolean,
+  vtSu: boolean,
+  vtTsu: boolean,
+  vtU: boolean
+};
+
+export type LevelsSettingsObjectData = {
+  vlN5: boolean,
+  vlN4: boolean,
+  vlN3: boolean,
+  vlN2: boolean,
+  vlN1: boolean
+};
+
 export type VerbFormData = {
   stem: {
     plain: boolean
@@ -57,27 +79,8 @@ export type AuxFormData = {
 export type SettingsObject = {
   testType: any
   testTypeObject: any,
-	verbType: {
-		vtIchidan: boolean,
-		vtIrregular: boolean,
-		vtBu: boolean,
-		vtGu: boolean,
-		vtKu: boolean,
-		vtMu: boolean,
-		vtNu: boolean,
-		vtRu: boolean,
-		vtSu: boolean,
-		vtTsu: boolean,
-		vtU: boolean,
-
-	},
-	verbLevel: {
-		vlN5: boolean,
-		vlN4: boolean,
-		vlN3: boolean,
-		vlN2: boolean,
-		vlN1: boolean
-	},
+	verbType: VerbTypeSettingsObjectData,
+	verbLevel: LevelsSettingsObjectData,
 	verbForms: VerbFormData,
 	auxForms: AuxFormData,
 	exclusiveAux: boolean

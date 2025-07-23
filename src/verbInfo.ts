@@ -1,7 +1,30 @@
 import { VerbInfo } from "jv-conjugator";
-import { SettingsObject } from "./defs";
+import { SettingsObject, VerbTypeSettingsObjectData } from "./defs";
 import path from 'path';
 import fs from 'fs/promises';
+
+export function convertVerbTypesInfo(settingsData: VerbTypeSettingsObjectData): number[] {
+	const verbTypes: number[] = [];
+
+	if (settingsData.vtIchidan) verbTypes.push(0);
+	if (settingsData.vtU) verbTypes.push(101);
+	if (settingsData.vtKu) verbTypes.push(102);
+	if (settingsData.vtGu) verbTypes.push(103);
+	if (settingsData.vtSu) verbTypes.push(104);
+	if (settingsData.vtTsu) verbTypes.push(105);
+	if (settingsData.vtNu) verbTypes.push(106);
+	if (settingsData.vtBu) verbTypes.push(107);
+	if (settingsData.vtMu) verbTypes.push(108);
+	if (settingsData.vtRu) verbTypes.push(109);
+
+	if (settingsData.vtIrregular) {
+		for (let i = 2; i < 13; i++) {
+			verbTypes.push(i);
+		}
+	}
+
+	return verbTypes;
+}
 
 export function getVerbLevelsArray(settingsObj: SettingsObject): string[] {
 	const verbLevels: string[] = [];

@@ -5,11 +5,11 @@ import https from 'https';
 import fs from 'fs';
 import { getQuestionInfo } from './src/question';
 import { SettingsObject, VerbFormsInfo } from './src/defs';
-import { getFullVerbList } from './src/verbInfo';
-import { VerbInfo } from 'jv-conjugator';
+import { convertVerbTypesInfo } from './src/verbInfo';
 import { convertVerbFormsInfo } from './src/formInfo';
 import mysql from 'mysql2/promise';
 import { convertVerbs } from './src/convert';
+import { convertLevelsInfo } from './src/levelInfo';
 
 require('dotenv').config();
 
@@ -43,17 +43,14 @@ if (secureServer && privkey && fullchain) {
 
 isLive = true;
 
-type SettingsInfo = {verbInfo: VerbInfo[], formsInfo: VerbFormsInfo};
+type SettingsInfo = {verbsInfo: number[], formsInfo: VerbFormsInfo, levelsInfo: number[]};
 const settingsInfo: Map<string, SettingsInfo> = new Map();
 
 
 app.get('/', (req: Request, res: Response) => res.json("Successful request"));
 
-app.get('/checkLive', async (req: Request, res: Response) => {
-
-  const [verb, _] = await (await dbConnection()).query("SELECT * FROM verbs");
-
-  res.json({isLive: isLive, verb: verb});
+app.get('/checkLive', (req: Request, res: Response) => {
+  res.json({isLive: isLive});
 });
 
 
@@ -61,22 +58,23 @@ app.post('/settings/:id', jsonParser, (req: Request, res: Response) => {
   const uid = req.params.id;
   const settings: SettingsObject = req.body.settings;
 
-  getFullVerbList(settings)
-    .then((info: VerbInfo[]) => {
-      const formsInfo: VerbFormsInfo = convertVerbFormsInfo(settings.verbForms, settings.auxForms, settings.exclusiveAux);
+  try {
+    const verbsInfo: number[] = convertVerbTypesInfo(settings.verbType);
+    const formsInfo: VerbFormsInfo = convertVerbFormsInfo(settings.verbForms, settings.auxForms, settings.exclusiveAux);
+    const levelsInfo: number[] = convertLevelsInfo(settings.verbLevel);
 
-      const newInfo: SettingsInfo = {verbInfo: info, formsInfo: formsInfo};
-      settingsInfo.set(uid, newInfo);
-      res.send("Settings received");
-    })
-    .catch(err => {
-      console.log(err);
-			res.status(500).send((err as Error).message);
-		});
+    const newInfo: SettingsInfo = {verbsInfo: verbsInfo, formsInfo: formsInfo, levelsInfo: levelsInfo};
+    settingsInfo.set(uid, newInfo);
+    res.send("Settings received");
+  }
+  catch (err) {
+    console.log(err);
+		res.status(500).send((err as Error).message);
+  }
 });
 
 
-app.get('/question/:id', (req: Request, res: Response) => {
+app.get('/question/:id', async (req: Request, res: Response) => {
   const uid = req.params.id;
 
   try {
@@ -85,7 +83,7 @@ app.get('/question/:id', (req: Request, res: Response) => {
       throw new Error("Uid not in store");
     }
 
-    const questionInfo = getQuestionInfo(info.verbInfo, info.formsInfo);
+    const questionInfo = await getQuestionInfo(info.verbsInfo, info.formsInfo, info.levelsInfo);
     return res.json(questionInfo);
   } catch (e) {
     console.log((e as Error).message);
